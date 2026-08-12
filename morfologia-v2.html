@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Oficina de Morfemas</title>
+<style>
+:root{
+  --bg:#141110; --card:#211c18; --border:#3a322b; --text:#e9dcc6; --muted:#a89880;
+  --accent:#d9a441; --prefix:#5fb8a8; --root:#d9a441; --infix:#8bc34a;
+  --suffix:#b48ead; --phon:#e08a4a; --syn:#7aa2d9;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
+header{margin-bottom:8px}
+h1{margin:0 0 4px;font-size:34px;letter-spacing:.5px;color:var(--accent)}
+.tag{margin:0;color:var(--muted);font-style:italic}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+.muted{color:var(--muted)}
+.progressWrap{margin:16px 0 4px}
+.progressBar{height:8px;background:#2a241f;border:1px solid var(--border);border-radius:99px;overflow:hidden}
+#progFill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#f0c96a);transition:width .4s}
+#progText{margin:8px 0 0;font-size:13px}
+.panel{margin-top:30px;border:1px solid var(--border);border-radius:14px;background:#191512;padding:18px 18px 22px}
+.panelHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.panelHead h2{margin:0;font-size:21px;display:flex;align-items:center;gap:9px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.dot.prefix{background:var(--prefix)}.dot.root{background:var(--root)}.dot.infix{background:var(--infix)}
+.dot.suffix{background:var(--suffix)}.dot.phon{background:var(--phon)}.dot.syn{background:var(--syn)}
+.btn{cursor:pointer;background:#2b241e;color:var(--text);border:1px solid var(--border);border-radius:9px;padding:8px 13px;font-size:14px;font-family:inherit}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#211a0c;border-color:var(--accent);font-weight:bold}
+.btn.primary:hover{filter:brightness(1.08);color:#211a0c}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 13px}
+.cardTop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.chip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;font-weight:bold;padding:3px 9px;border-radius:8px;background:#2b241e;border:1px solid var(--border)}
+.chip.prefix{color:var(--prefix)}.chip.root{color:var(--root)}.chip.infix{color:var(--infix)}
+.chip.suffix{color:var(--suffix)}.chip.phon{color:var(--phon)}.chip.syn{color:var(--syn)}
+.cardActions{display:flex;gap:6px}
+.icon{cursor:pointer;background:none;border:none;color:var(--muted);font-size:15px;padding:2px 4px}
+.icon:hover{color:var(--accent)}
+.meaning{margin:0;font-size:14px;color:#d6c8b0}
+.example{margin:8px 0 0;font-size:13px;color:var(--muted)}
+.example b{color:var(--text);font-family:ui-monospace,Menlo,Consolas,monospace}
+.words{margin:10px 0 0;padding-left:18px;font-size:13px;color:#d6c8b0}
+.words b{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--root)}
+.empty{color:var(--muted);font-style:italic;font-size:14px}
+.builder{border:1px solid var(--accent);background:#1c1712;border-radius:14px;padding:18px;margin-top:26px}
+.builder h2{margin:0 0 14px;font-size:20px;color:var(--accent)}
+.buildRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.buildRow select{flex:1;min-width:150px;background:#241e18;color:var(--text);border:1px solid var(--border);border-radius:9px;padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px}
+.plus{color:var(--muted);font-size:20px}
+.buildCtl{display:flex;align-items:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+label.toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);cursor:pointer}
+#buildOut{margin-top:16px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:30px;color:#f0c96a;min-height:40px}
+#buildOut .raw{font-size:14px;color:var(--muted);margin-left:12px}
+footer{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.hidden{display:none}
+.modalBox{background:#211c18;border:1px solid var(--border);border-radius:14px;padding:22px;width:100%;max-width:520px;max-height:85vh;overflow:auto}
+.modalBox h3{margin:0 0 16px;color:var(--accent)}
+.modalBox label{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
+.modalBox input,.modalBox textarea{width:100%;background:#2b241e;color:var(--text);border:1px solid var(--border);border-radius:8px;padding:9px;font-family:inherit;font-size:14px}
+.modalBox textarea{min-height:64px;resize:vertical}
+.wordsHeader{display:flex;align-items:center;justify-content:space-between;margin:18px 0 8px;font-size:14px;color:var(--muted)}
+.wordRow{display:flex;gap:8px;margin-bottom:8px}
+.wordRow input{flex:1}
+.wordRow button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px}
+.wordRow button:hover{color:#e06a4a}
+.modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#211a0c;padding:10px 18px;border-radius:99px;font-weight:bold;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Oficina de Morfemas</h1>
+    <p class="tag">raízes · prefixos · infixos · sufixos · fonologia · sintaxe</p>
+    <div class="progressWrap">
+      <div class="progressBar"><div id="progFill"></div></div>
+      <p id="progText" class="muted"></p>
+    </div>
+  </header>
+
+  <section class="builder">
+    <h2>Prefixo — Raiz — Infixo — Sufixo</h2>
+    <div class="buildRow">
+      <select id="selPrefix"></select><span class="plus">+</span>
+      <select id="selRoot"></select><span class="plus">+</span>
+      <select id="selInfix"></select><span class="plus">+</span>
+      <select id="selSuffix"></select>
+    </div>
+    <div class="buildCtl">
+      <label class="toggle"><input type="checkbox" id="phonAuto" checked/> aplicar regras fonológicas automaticamente</label>
+      <button class="btn" id="btnCopy">copiar palavra</button>
+    </div>
+    <div id="buildOut"><span class="muted" style="font-size:15px">selecione morfemas para montar uma palavra…</span></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot prefix"></span>Prefixos</h2><button class="btn" id="addPrefix">+ Adicionar</button></div>
+    <div class="grid" id="prefixGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot root"></span>Raízes</h2><button class="btn" id="addRoot">+ Adicionar</button></div>
+    <div class="grid" id="rootsGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot infix"></span>Infixos <span class="muted" style="font-size:13px">(dual / plural)</span></h2><button class="btn" id="addInfix">+ Adicionar</button></div>
+    <div class="grid" id="infixGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot suffix"></span>Sufixos</h2><button class="btn" id="addSuffix">+ Adicionar</button></div>
+    <div class="grid" id="suffixGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot phon"></span>Regras Fonológicas</h2><button class="btn" id="addPhon">+ Adicionar</button></div>
+    <div class="grid" id="phonGrid"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead"><h2><span class="dot syn"></span>Sintaxe</h2><button class="btn" id="addSyn">+ Adicionar</button></div>
+    <div class="grid" id="synGrid"></div>
+  </section>
+
+  <footer>
+    <button class="btn primary" id="btnSave">Salvar em JSON</button>
+    <button class="btn" id="btnLoad">Carregar JSON</button>
+    <button class="btn" id="btnDefaults">Restaurar regras padrão</button>
+    <button class="btn" id="btnClear">Limpar tudo</button>
+    <input type="file" id="fileInput" accept=".json,application/json" hidden/>
+  </footer>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modalBox">
+    <h3 id="modalTitle"></h3>
+    <div id="modalFields"></div>
+    <div class="modalActions">
+      <button class="btn" id="modalCancel">Cancelar</button>
+      <button class="btn primary" id="modalSave">Salvar</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+const store={
+  key:'oficinaMorfemas',
+  state:{prefixes:[],roots:[],infixes:[],suffixes:[],phonology:[],syntax:[]},
+  save(){ localStorage.setItem(this.key,JSON.stringify(this.state)); },
+  load(){
+    try{ const raw=localStorage.getItem(this.key);
+      if(raw) this.state=this.normalize(JSON.parse(raw));
+    }catch(e){ console.warn(e); }
+  },
+  normalize(data){
+    const clean=o=>{
+      if(Array.isArray(o)) return o.map(clean);
+      if(o&&typeof o==='object'){ const out={}; for(const k in o) out[k.trim()]=clean(o[k]); return out; }
+      return o;
+    };
+    const d=clean(data||{});
+    return {
+      prefixes:d.prefixes||[], roots:d.roots||[], infixes:d.infixes||[],
+      suffixes:d.suffixes||[], phonology:d.phonology||d.fonologia||[], syntax:d.syntax||d.sintaxe||[]
+    };
+  }
+};
+function defaultInfixes(){return[{text:'-i-',meaning:'Dual: exatamente dois. Fica entre a raiz e o sufixo de caso.'},{text:'-a-',meaning:'Plural: três ou mais. Fica entre a raiz e o sufixo de caso.'}];}
+function defaultPhonology(){return[
+ {name:'W → U',description:'O "w" no fim da raiz vira "u" antes de receber sufixo/infixo.',example:'perkw + -m → perkum'},
+ {name:'Y → I',description:'O "y" no fim da raiz vira "i" antes de receber sufixo/infixo.',example:'viy + -k → viik'},
+ {name:'Vogal de eco (epêntese)',description:'Se a raiz termina em consoante e o sufixo começa com consoante, insere-se uma cópia da última vogal da raiz.',example:'bhég + -k → bhégék'}];}
+function defaultSyntax(){return[
+ {name:'Ordem padrão (SVO)',description:'A ordem neutra é Sujeito — Verbo — Objeto. Os sufixos de caso permitem inverter para dar ênfase.',example:'Égor vobhég bhégen.'},
+ {name:'Concordância opcional do adjetivo',description:'O adjetivo normalmente fica "limpo" junto do substantivo; só recebe sufixo de caso para destacá-lo.',example:'bel perkw → belen perkwen (ênfase)'}];}
+function strip(s){return(s||'').trim().replace(/^[-\s]+|[-\s]+$/g,'');}
+function escapeHtml(s){return(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function isVowel(c){return'aeiouáàâãéêíóôõúü'.includes((c||'').toLowerCase());}
+function isConsonant(c){return!!c&&/[a-zà-ü]/i.test(c)&&!isVowel(c);}
+function normVowel(c){const m={'á':'a','à':'a','â':'a','ã':'a','é':'e','ê':'e','í':'i','ó':'o','ô':'o','õ':'o','ú':'u','ü':'u'};return m[(c||'').toLowerCase()]||(c||'').toLowerCase();}
+function lastVowel(w){for(let i=w.length-1;i>=0;i--){if(isVowel(w[i]))return normVowel(w[i]);}return null;}
+function applyPhon(prefix,root,infix,suffix){
+  let r=root;const following=infix||suffix||'';
+  if(following){
+    if(/[wW]$/.test(r))r=r.slice(0,-1)+'u';
+    else if(/[yY]$/.test(r))r=r.slice(0,-1)+'i';
+    if(isConsonant(r[r.length-1])&&isConsonant(following[0])){const v=lastVowel(root);if(v)r+=v;}
+  }
+  return prefix+r+infix+suffix;
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);}
+function persist(){store.save();renderAll();}
+function typeLabel(t){return{prefix:'prefixo',suffix:'sufixo',infix:'infixo',root:'raiz',phon:'regra fonológica',syn:'regra de sintaxe'}[t]||t;}
+
+function renderSimple(containerId,key,cssClass){
+  const c=document.getElementById(containerId);c.innerHTML='';const arr=store.state[key];
+  if(!arr.length){c.innerHTML='<p class="empty">Nada aqui ainda — clique em "Adicionar".</p>';return;}
+  arr.forEach((item,idx)=>{
+    const card=document.createElement('div');card.className='card';
+    card.innerHTML=`<div class="cardTop"><span class="chip ${cssClass}">${escapeHtml(item.text)}</span>
+      <span class="cardActions"><button class="icon" data-act="edit">✎</button><button class="icon" data-act="del">✕</button></span></div>
+      <p class="meaning">${escapeHtml(item.meaning||'')}</p>`;
+    card.querySelector('[data-act=del]').onclick=()=>{if(confirm('Remover este item?')){arr.splice(idx,1);persist();}};
+    card.querySelector('[data-act=edit]').onclick=()=>openEditor(cssClass,idx);
+    c.appendChild(card);
+  });
+}
+function renderRoots(){
+  const c=document.getElementById('rootsGrid');c.innerHTML='';const arr=store.state.roots;
+  if(!arr.length){c.innerHTML='<p class="empty">Nenhuma raiz ainda — clique em "Adicionar".</p>';return;}
+  arr.forEach((r,idx)=>{
+    const card=document.createElement('div');card.className='card';
+    let words='';
+    if(r.words&&r.words.length)words='<ul class="words">'+r.words.map(w=>`<li><b>${escapeHtml(w.text)}</b> — ${escapeHtml(w.meaning)}</li>`).join('')+'</ul>';
+    card.innerHTML=`<div class="cardTop"><span class="chip root">${escapeHtml(r.name)}</span>
+      <span class="cardActions"><button class="icon" data-act="edit">✎</button><button class="icon" data-act="del">✕</button></span></div>
+      <p class="meaning">${escapeHtml(r.meaning||'')}</p>${words}`;
+    card.querySelector('[data-act=del]').onclick=()=>{if(confirm('Remover esta raiz?')){store.state.roots.splice(idx,1);persist();}};
+    card.querySelector('[data-act=edit]').onclick=()=>openEditor('root',idx);
+    c.appendChild(card);
+  });
+}
+function renderRules(containerId,key,cssClass,editorType){
+  const c=document.getElementById(containerId);c.innerHTML='';const arr=store.state[key];
+  if(!arr.length){c.innerHTML='<p class="empty">Nenhuma regra ainda — clique em "Adicionar".</p>';return;}
+  arr.forEach((r,idx)=>{
+    const card=document.createElement('div');card.className='card';
+    card.innerHTML=`<div class="cardTop"><span class="chip ${cssClass}">${escapeHtml(r.name)}</span>
+      <span class="cardActions"><button class="icon" data-act="edit">✎</button><button class="icon" data-act="del">✕</button></span></div>
+      <p class="meaning">${escapeHtml(r.description||'')}</p>
+      ${r.example?`<p class="example">ex.: <b>${escapeHtml(r.example)}</b></p>`:''}`;
+    card.querySelector('[data-act=del]').onclick=()=>{if(confirm('Remover esta regra?')){arr.splice(idx,1);persist();}};
+    card.querySelector('[data-act=edit]').onclick=()=>openEditor(editorType,idx);
+    c.appendChild(card);
+  });
+}
+function populateSelects(){
+  fillSel('selPrefix',store.state.prefixes,p=>strip(p.text));
+  fillSel('selRoot',store.state.roots,r=>strip(r.name));
+  fillSel('selInfix',store.state.infixes,i=>strip(i.text));
+  fillSel('selSuffix',store.state.suffixes,s=>strip(s.text));
+}
+function fillSel(id,arr,fn){
+  const sel=document.getElementById(id);const cur=sel.value;
+  sel.innerHTML='<option value="">— selecione —</option>';
+  arr.forEach((it,i)=>{const o=document.createElement('option');o.value=i;o.textContent=fn(it);sel.appendChild(o);});
+  if(cur!==''&&sel.querySelector(`option[value="${cur}"]`))sel.value=cur;
+}
+function buildWord(){
+  const P=store.state.prefixes,R=store.state.roots,I=store.state.infixes,S=store.state.suffixes;
+  const pi=document.getElementById('selPrefix').value,ri=document.getElementById('selRoot').value,
+        ii=document.getElementById('selInfix').value,si=document.getElementById('selSuffix').value;
+  const p=pi!==''?strip(P[pi].text):'';let r=ri!==''?strip(R[ri].name):'';
+  const inf=ii!==''?strip(I[ii].text):'';const s=si!==''?strip(S[si].text):'';
+  const out=document.getElementById('buildOut');const raw=p+r+inf+s;
+  if(!raw){out.innerHTML='<span class="muted" style="font-size:15px">selecione morfemas para montar uma palavra…</span>';return;}
+  let adj=raw;
+  if(document.getElementById('phonAuto').checked&&r)adj=applyPhon(p,r,inf,s);
+  out.innerHTML=(adj!==raw)?`<span>${adj}</span><span class="raw">forma base: ${raw}</span>`:`<span>${adj}</span>`;
+}
+function updateProgress(){
+  const s=store.state;
+  const c={'prefixos':s.prefixes.length,'raízes':s.roots.length,'infixos':s.infixes.length,'sufixos':s.suffixes.length,'fonologia':s.phonology.length,'sintaxe':s.syntax.length};
+  const total=Object.values(c).reduce((a,b)=>a+b,0);
+  document.getElementById('progText').textContent=Object.entries(c).map(([k,v])=>`${v} ${k}`).join(' · ')+` — total ${total} · salvo automaticamente`;
+  document.getElementById('progFill').style.width=Math.min(100,total*4)+'%';
+}
+function renderAll(){
+  renderSimple('prefixGrid','prefixes','prefix');renderRoots();
+  renderSimple('infixGrid','infixes','infix');renderSimple('suffixGrid','suffixes','suffix');
+  renderRules('phonGrid','phonology','phon','phon');renderRules('synGrid','syntax','syn','syn');
+  populateSelects();updateProgress();buildWord();
+}
+function openEditor(type,idx){
+  const modal=document.getElementById('modal'),fields=document.getElementById('modalFields'),title=document.getElementById('modalTitle');
+  fields.innerHTML='';let onSave;
+  if(type==='prefix'||type==='suffix'||type==='infix'){
+    const key={prefix:'prefixes',suffix:'suffixes',infix:'infixes'}[type];
+    const it=idx>=0?store.state[key][idx]:{text:'',meaning:''};
+    title.textContent=(idx>=0?'Editar ':'Novo ')+typeLabel(type);
+    fields.innerHTML=`<label>Texto<input id="f_text" value="${escapeHtml(it.text)}"/></label>
+      <label>Significado<textarea id="f_meaning">${escapeHtml(it.meaning)}</textarea></label>`;
+    onSave=()=>{const t=document.getElementById('f_text').value.trim(),m=document.getElementById('f_meaning').value.trim();
+      if(!t){alert('Texto obrigatório');return false;}
+      const o={text:t,meaning:m};if(idx>=0)store.state[key][idx]=o;else store.state[key].push(o);return true;};
+  }else if(type==='phon'||type==='syn'){
+    const key=type==='phon'?'phonology':'syntax';
+    const it=idx>=0?store.state[key][idx]:{name:'',description:'',example:''};
+    title.textContent=(idx>=0?'Editar ':'Nova ')+typeLabel(type);
+    fields.innerHTML=`<label>Nome<input id="f_name" value="${escapeHtml(it.name)}"/></label>
+      <label>Descrição<textarea id="f_desc">${escapeHtml(it.description)}</textarea></label>
+      <label>Exemplo<input id="f_ex" value="${escapeHtml(it.example)}"/></label>`;
+    onSave=()=>{const n=document.getElementById('f_name').value.trim(),d=document.getElementById('f_desc').value.trim(),e=document.getElementById('f_ex').value.trim();
+      if(!n){alert('Nome obrigatório');return false;}
+      const o={name:n,description:d,example:e};if(idx>=0)store.state[key][idx]=o;else store.state[key].push(o);return true;};
+  }else if(type==='root'){
+    const it=idx>=0?store.state.roots[idx]:{name:'',meaning:'',words:[]};
+    title.textContent=(idx>=0?'Editar ':'Nova ')+'raiz';
+    fields.innerHTML=`<label>Nome<input id="f_name" value="${escapeHtml(it.name)}"/></label>
+      <label>Significado<textarea id="f_meaning">${escapeHtml(it.meaning)}</textarea></label>
+      <div class="wordsHeader">Palavras derivadas <button class="btn" type="button" id="addWord">+ palavra</button></div>
+      <div id="wordsList"></div>`;
+    const wc=JSON.parse(JSON.stringify(it.words||[]));const wl=document.getElementById('wordsList');
+    const rw=()=>{wl.innerHTML='';wc.forEach((w,i)=>{const row=document.createElement('div');row.className='wordRow';
+      row.innerHTML=`<input placeholder="palavra" value="${escapeHtml(w.text)}"/><input placeholder="significado" value="${escapeHtml(w.meaning)}"/><button type="button">✕</button>`;
+      const ins=row.querySelectorAll('input');ins[0].oninput=e=>wc[i].text=e.target.value;ins[1].oninput=e=>wc[i].meaning=e.target.value;
+      row.querySelector('button').onclick=()=>{wc.splice(i,1);rw();};wl.appendChild(row);});};
+    rw();document.getElementById('addWord').onclick=()=>{wc.push({text:'',meaning:''});rw();};
+    onSave=()=>{const n=document.getElementById('f_name').value.trim(),m=document.getElementById('f_meaning').value.trim();
+      if(!n){alert('Nome obrigatório');return false;}
+      const words=wc.filter(w=>w.text.trim()).map(w=>({text:w.text.trim(),meaning:(w.meaning||'').trim()}));
+      const o={name:n,meaning:m,words};if(idx>=0)store.state.roots[idx]=o;else store.state.roots.push(o);return true;};
+  }
+  modal.classList.remove('hidden');
+  document.getElementById('modalSave').onclick=()=>{if(onSave()!==false){persist();modal.classList.add('hidden');}};
+  document.getElementById('modalCancel').onclick=()=>modal.classList.add('hidden');
+}
+document.getElementById('addPrefix').onclick=()=>openEditor('prefix',-1);
+document.getElementById('addRoot').onclick=()=>openEditor('root',-1);
+document.getElementById('addInfix').onclick=()=>openEditor('infix',-1);
+document.getElementById('addSuffix').onclick=()=>openEditor('suffix',-1);
+document.getElementById('addPhon').onclick=()=>openEditor('phon',-1);
+document.getElementById('addSyn').onclick=()=>openEditor('syn',-1);
+['selPrefix','selRoot','selInfix','selSuffix'].forEach(id=>document.getElementById(id).addEventListener('change',buildWord));
+document.getElementById('phonAuto').addEventListener('change',buildWord);
+document.getElementById('btnCopy').onclick=()=>{const w=document.querySelector('#buildOut span');if(w&&w.textContent){navigator.clipboard.writeText(w.textContent).then(()=>toast('Palavra copiada!'));}};
+document.getElementById('btnSave').onclick=()=>{const blob=new Blob([JSON.stringify(store.state,null,1)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='morfemas.json';a.click();toast('JSON salvo!');};
+document.getElementById('btnLoad').onclick=()=>document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{const inc=store.normalize(JSON.parse(rd.result));
+    if(!inc.infixes.length)inc.infixes=store.state.infixes;
+    if(!inc.phonology.length)inc.phonology=store.state.phonology;
+    if(!inc.syntax.length)inc.syntax=store.state.syntax;
+    store.state=inc;persist();toast('JSON carregado!');}catch(err){alert('Erro ao ler JSON: '+err.message);}};
+  rd.readAsText(f);e.target.value='';};
+document.getElementById('btnDefaults').onclick=()=>{if(confirm('Restaurar regras padrão de infixos, fonologia e sintaxe? (substitui essas três seções)')){
+  store.state.infixes=defaultInfixes();store.state.phonology=defaultPhonology();store.state.syntax=defaultSyntax();persist();toast('Regras padrão restauradas!');}};
+document.getElementById('btnClear').onclick=()=>{if(confirm('Apagar TODOS os dados?')){store.state={prefixes:[],roots:[],infixes:[],suffixes:[],phonology:[],syntax:[]};persist();}};
+store.load();renderAll();
+</script>
+</body>
+</html>

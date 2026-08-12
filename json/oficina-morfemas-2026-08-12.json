@@ -1,0 +1,14 @@
+{
+  "prefixes": [],
+  "suffixes": [
+    {
+      "text": "-r",
+      "meaning": "sujeito, exemplo vael-r (o lobo [faz algo])"
+    },
+    {
+      "text": "-en",
+      "meaning": "objeto, exemplo Vael*r Kaelen* = \"O lobo [pegou/quebrou/usou] a espada"
+    }
+  ],
+  "roots": []
+}

@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina de Morfemas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+  :root{
+    --ink:#161d1a;
+    --paper:#f4efe2;
+    --paper-dim:#e9e2d0;
+    --teal:#2f6e5d;
+    --teal-deep:#1e4a3e;
+    --ochre:#c9922f;
+    --line:#3a453f;
+    --text:#eae5d6;
+    --text-dim:#a8a99c;
+    --danger:#b5502f;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+
+  ::selection{background:var(--ochre);color:var(--ink);}
+
+  /* ---------- Header / Combinador ---------- */
+  header{
+    padding:2.5rem 2rem 2rem;
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse at top left, rgba(47,110,93,0.25), transparent 60%),
+      var(--ink);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ochre);
+    margin:0 0 .4rem;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    margin:0 0 1.6rem;
+    letter-spacing:-.01em;
+  }
+
+  .bench{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    flex-wrap:wrap;
+    background:var(--paper);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+  }
+  .bench-slot{
+    flex:1 1 160px;
+    padding:1.1rem 1.2rem;
+    border-right:1px dashed #c9bfa2;
+    display:flex;
+    flex-direction:column;
+    gap:.35rem;
+    min-width:150px;
+  }
+  .bench-slot:last-child{border-right:none;}
+  .bench-slot label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.65rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--teal-deep);
+  }
+  .bench-slot select{
+    border:none;
+    background:transparent;
+    font-family:'Fraunces',serif;
+    font-size:1.3rem;
+    color:var(--ink);
+    padding:.1rem 0;
+    cursor:pointer;
+  }
+  .bench-meaning{
+    font-family:'Inter',sans-serif;
+    font-size:.72rem;
+    color:#6b6656;
+    min-height:1.1em;
+  }
+  .bench-result{
+    flex:1.4 1 240px;
+    background:var(--teal-deep);
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:1rem 1.4rem;
+    position:relative;
+  }
+  .bench-result .word{
+    font-family:'Fraunces',serif;
+    font-size:clamp(1.6rem,3vw,2.2rem);
+    font-weight:600;
+    text-align:center;
+    line-height:1.15;
+    word-break:break-word;
+  }
+  .bench-result .word .part{opacity:.55;}
+  .bench-result .word .part.root{opacity:1;color:var(--ochre);}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex;
+    gap:.6rem;
+    flex-wrap:wrap;
+    padding:1.2rem 2rem;
+    border-bottom:1px solid var(--line);
+    align-items:center;
+  }
+  .toolbar .spacer{flex:1;}
+  .toolbar .status{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.72rem;
+    color:var(--text-dim);
+  }
+
+  button{
+    font-family:'Inter',sans-serif;
+    font-size:.85rem;
+    font-weight:500;
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--text);
+    padding:.5rem .9rem;
+    border-radius:6px;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+  button:hover{border-color:var(--teal);color:var(--paper);background:var(--teal-deep);}
+  button.primary{background:var(--teal);border-color:var(--teal);color:var(--ink);font-weight:600;}
+  button.primary:hover{background:var(--ochre);border-color:var(--ochre);color:var(--ink);}
+  button.ghost-danger{color:var(--danger);border-color:transparent;}
+  button.ghost-danger:hover{background:rgba(181,80,47,.15);border-color:var(--danger);color:var(--danger);}
+  input[type=file]{display:none;}
+
+  /* ---------- Columns ---------- */
+  main{
+    display:grid;
+    grid-template-columns:1fr 1.4fr 1fr;
+    gap:1px;
+    background:var(--line);
+  }
+  @media (max-width:900px){
+    main{grid-template-columns:1fr;}
+  }
+  section.col{
+    background:var(--ink);
+    padding:1.4rem 1.5rem 2rem;
+    min-height:200px;
+  }
+  .col-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:1rem;
+    padding-bottom:.6rem;
+    border-bottom:1px solid var(--line);
+  }
+  .col-head h2{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin:0;
+    color:var(--text-dim);
+  }
+  .col-head .count{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.78rem;
+    color:var(--ochre);
+  }
+
+  .add-row{
+    display:flex;
+    flex-direction:column;
+    gap:.4rem;
+    margin-bottom:1rem;
+  }
+  .add-row .row-line{
+    display:flex;
+    gap:.4rem;
+  }
+  .add-row input{
+    flex:1;
+    background:var(--paper-dim);
+    border:1px solid transparent;
+    border-radius:6px;
+    padding:.5rem .6rem;
+    font-family:'Inter',sans-serif;
+    font-size:.85rem;
+    color:var(--ink);
+    min-width:0;
+  }
+  .add-row input.meaning-input{
+    font-size:.78rem;
+    background:transparent;
+    border:1px dashed var(--line);
+    color:var(--text);
+  }
+  .add-row input:focus{outline:2px solid var(--teal);outline-offset:1px;}
+  .add-row button{padding:.5rem .7rem;white-space:nowrap;}
+
+  .empty{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.78rem;
+    color:var(--text-dim);
+    padding:1rem 0;
+    border:1px dashed var(--line);
+    border-radius:6px;
+    text-align:center;
+  }
+
+  .item{
+    background:var(--paper-dim);
+    border-radius:8px;
+    margin-bottom:.55rem;
+    padding:.65rem .8rem;
+    color:var(--ink);
+  }
+  .item-top{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+  }
+  .item-top .morph{
+    font-family:'IBM Plex Mono',monospace;
+    font-weight:600;
+    font-size:.95rem;
+    flex:1;
+  }
+  .item-body{display:none;}
+  .item.edit-mode .item-top .morph,
+  .item.edit-mode .item-top .meaning-display{display:none;}
+  .item.edit-mode .item-body{display:block;}
+
+  .meaning-display{
+    font-family:'Inter',sans-serif;
+    font-size:.76rem;
+    color:#6b6656;
+    margin-top:.15rem;
+    line-height:1.3;
+  }
+  .meaning-display:empty::before,
+  .meaning-display.is-empty::before{
+    content:"sem significado anotado";
+    font-style:italic;
+    opacity:.7;
+  }
+
+  .item-name-col{flex:1;min-width:0;}
+
+  .item-body{
+    display:none;
+    flex-direction:column;
+    gap:.4rem;
+    margin-top:.3rem;
+  }
+  .item-body input{
+    font-family:'Inter',sans-serif;
+    font-size:.85rem;
+    padding:.4rem .5rem;
+    border-radius:5px;
+    border:1px solid var(--teal);
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .item-body input.edit-morph{font-family:'IBM Plex Mono',monospace;font-weight:600;}
+  .item-body input.edit-meaning{font-size:.78rem;}
+
+  .icon-btn{
+    border:none;
+    background:transparent;
+    padding:.2rem .35rem;
+    font-size:.85rem;
+    color:#6b6656;
+    border-radius:4px;
+    flex-shrink:0;
+  }
+  .icon-btn:hover{background:#dcd3ba;color:var(--ink);}
+  .icon-btn.danger:hover{background:rgba(181,80,47,.2);color:var(--danger);}
+
+  /* derived words inside root card */
+  .derived-wrap{
+    margin-top:.55rem;
+    padding-top:.5rem;
+    border-top:1px dashed #c9bfa2;
+  }
+  .derived-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:.35rem;
+    margin-bottom:.5rem;
+  }
+  .derived-list{
+    display:flex;
+    flex-direction:column;
+    gap:.3rem;
+    margin-bottom:.6rem;
+  }
+  .dword{
+    background:var(--teal);
+    color:var(--paper);
+    border-radius:7px;
+    padding:.35rem .55rem;
+  }
+  .dword-top{
+    display:flex;
+    align-items:center;
+    gap:.4rem;
+  }
+  .dword-top .dword-text{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:.8rem;
+    flex:1;
+  }
+  .dword-meaning{
+    font-family:'Inter',sans-serif;
+    font-size:.7rem;
+    color:#dff0ea;
+    opacity:.85;
+    margin-top:.1rem;
+  }
+  .dword-meaning.is-empty{font-style:italic;opacity:.6;}
+  .dword button.icon-mini{
+    all:unset;
+    cursor:pointer;
+    font-size:.75rem;
+    line-height:1;
+    color:var(--paper);
+    opacity:.75;
+    padding:.1rem .2rem;
+    flex-shrink:0;
+  }
+  .dword button.icon-mini:hover{opacity:1;}
+  .dword .dword-edit{
+    display:none;
+    flex-direction:column;
+    gap:.3rem;
+    margin-top:.3rem;
+  }
+  .dword.edit-mode .dword-top .dword-text,
+  .dword.edit-mode .dword-meaning{display:none;}
+  .dword.edit-mode .dword-edit{display:flex;}
+  .dword-edit input{
+    font-size:.76rem;
+    padding:.3rem .45rem;
+    border-radius:4px;
+    border:1px solid var(--ochre);
+    background:var(--paper);
+    color:var(--ink);
+  }
+  .derived-add{
+    display:flex;
+    flex-direction:column;
+    gap:.3rem;
+  }
+  .derived-add .row-line{
+    display:flex;
+    gap:.35rem;
+  }
+  .derived-add input{
+    flex:1;
+    font-size:.78rem;
+    padding:.35rem .5rem;
+    border-radius:5px;
+    border:1px solid #c9bfa2;
+    background:var(--paper);
+    color:var(--ink);
+    min-width:0;
+  }
+  .derived-add input.dword-meaning-input{
+    font-size:.72rem;
+    background:transparent;
+    border:1px dashed var(--line);
+    color:var(--text);
+  }
+  .derived-add button{
+    padding:.3rem .55rem;
+    font-size:.75rem;
+    border-color:#c9bfa2;
+    color:var(--ink);
+    white-space:nowrap;
+  }
+  .derived-add button:hover{background:var(--teal);color:var(--paper);border-color:var(--teal);}
+
+  footer{
+    padding:1.2rem 2rem 2rem;
+    text-align:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:.7rem;
+    color:var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Oficina de morfemas &middot; raízes, prefixos e sufixos</p>
+  <h1>Monte, estude e organize a formação das palavras</h1>
+
+  <div class="bench">
+    <div class="bench-slot">
+      <label>Prefixo</label>
+      <select id="benchPrefix"><option value="">—</option></select>
+      <span class="bench-meaning" id="benchPrefixMeaning"></span>
+    </div>
+    <div class="bench-slot">
+      <label>Raiz</label>
+      <select id="benchRoot"><option value="">—</option></select>
+      <span class="bench-meaning" id="benchRootMeaning"></span>
+    </div>
+    <div class="bench-slot">
+      <label>Sufixo</label>
+      <select id="benchSuffix"><option value="">—</option></select>
+      <span class="bench-meaning" id="benchSuffixMeaning"></span>
+    </div>
+    <div class="bench-result">
+      <div class="word" id="benchWord"><span class="part">selecione</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="primary" id="btnSave">Salvar em JSON</button>
+  <button id="btnLoad">Carregar JSON</button>
+  <input type="file" id="fileInput" accept="application/json">
+  <button class="ghost-danger" id="btnClear">Limpar tudo</button>
+  <div class="spacer"></div>
+  <span class="status" id="statusMsg">progresso salvo automaticamente no navegador</span>
+</div>
+
+<main>
+  <section class="col" id="colPrefix">
+    <div class="col-head">
+      <h2>Prefixos</h2>
+      <span class="count" id="countPrefix">0</span>
+    </div>
+    <div class="add-row">
+      <div class="row-line">
+        <input type="text" id="inputPrefix" placeholder="ex: des-, re-, in-">
+        <button id="addPrefix">Adicionar</button>
+      </div>
+      <input type="text" class="meaning-input" id="inputPrefixMeaning" placeholder="significado (opcional)">
+    </div>
+    <div id="listPrefix"></div>
+  </section>
+
+  <section class="col" id="colRoot">
+    <div class="col-head">
+      <h2>Raízes</h2>
+      <span class="count" id="countRoot">0</span>
+    </div>
+    <div class="add-row">
+      <div class="row-line">
+        <input type="text" id="inputRoot" placeholder="ex: -port-, -grafia-, -ceptar-">
+        <button id="addRoot">Adicionar</button>
+      </div>
+      <input type="text" class="meaning-input" id="inputRootMeaning" placeholder="significado (opcional)">
+    </div>
+    <div id="listRoot"></div>
+  </section>
+
+  <section class="col" id="colSuffix">
+    <div class="col-head">
+      <h2>Sufixos</h2>
+      <span class="count" id="countSuffix">0</span>
+    </div>
+    <div class="add-row">
+      <div class="row-line">
+        <input type="text" id="inputSuffix" placeholder="ex: -mente, -ção, -oso">
+        <button id="addSuffix">Adicionar</button>
+      </div>
+      <input type="text" class="meaning-input" id="inputSuffixMeaning" placeholder="significado (opcional)">
+    </div>
+    <div id="listSuffix"></div>
+  </section>
+</main>
+
+<footer>oficina-de-morfemas &middot; dados ficam no seu navegador (localStorage) e podem ser exportados/importados em JSON</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  const STORAGE_KEY = "oficina-morfemas-v3";
+  const OLD_STORAGE_KEY_V2 = "oficina-morfemas-v2";
+  const OLD_STORAGE_KEY_V1 = "oficina-morfemas-v1";
+
+  /** @type {{
+   *   prefixes: {text:string, meaning:string}[],
+   *   suffixes: {text:string, meaning:string}[],
+   *   roots: {name:string, meaning:string, words:{text:string, meaning:string}[]}[]
+   * }} */
+  let data = {
+    prefixes: [],
+    suffixes: [],
+    roots: []
+  };
+
+  // ---------- persistence ----------
+  function save(){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      setStatus("progresso salvo automaticamente no navegador");
+    }catch(e){
+      setStatus("não foi possível salvar automaticamente — use 'Salvar em JSON'");
+    }
+  }
+
+  function normalizeSimpleList(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.map(v => {
+      if(typeof v === "string") return {text: v, meaning: ""};
+      return {text: v.text || "", meaning: v.meaning || ""};
+    });
+  }
+
+  function normalizeWords(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.map(w => {
+      if(typeof w === "string") return {text: w, meaning: ""};
+      return {text: w.text || "", meaning: w.meaning || ""};
+    });
+  }
+
+  function normalizeRoots(arr){
+    if(!Array.isArray(arr)) return [];
+    return arr.map(r => ({
+      name: r.name || "",
+      meaning: r.meaning || "",
+      words: normalizeWords(r.words)
+    }));
+  }
+
+  function applyParsed(parsed){
+    data.prefixes = normalizeSimpleList(parsed.prefixes);
+    data.suffixes = normalizeSimpleList(parsed.suffixes);
+    data.roots = normalizeRoots(parsed.roots);
+  }
+
+  function loadFromStorage(){
+    try{
+      let raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        // tenta migrar de versões anteriores sem significado nas palavras/campos
+        raw = localStorage.getItem(OLD_STORAGE_KEY_V2) || localStorage.getItem(OLD_STORAGE_KEY_V1);
+      }
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === "object") applyParsed(parsed);
+      }
+    }catch(e){ /* ignore corrupted storage */ }
+  }
+
+  function setStatus(msg){
+    document.getElementById("statusMsg").textContent = msg;
+  }
+
+  // ---------- rendering ----------
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+  }
+
+  function renderPrefixes(){
+    const list = document.getElementById("listPrefix");
+    document.getElementById("countPrefix").textContent = data.prefixes.length;
+    if(data.prefixes.length === 0){
+      list.innerHTML = '<div class="empty">nenhum prefixo ainda</div>';
+    } else {
+      list.innerHTML = data.prefixes.map((p, i) => simpleItem(p, i, "prefix")).join("");
+    }
+    renderBenchOptions();
+  }
+
+  function renderSuffixes(){
+    const list = document.getElementById("listSuffix");
+    document.getElementById("countSuffix").textContent = data.suffixes.length;
+    if(data.suffixes.length === 0){
+      list.innerHTML = '<div class="empty">nenhum sufixo ainda</div>';
+    } else {
+      list.innerHTML = data.suffixes.map((s, i) => simpleItem(s, i, "suffix")).join("");
+    }
+    renderBenchOptions();
+  }
+
+  function simpleItem(entry, index, kind){
+    const meaningClass = entry.meaning ? "meaning-display" : "meaning-display is-empty";
+    return `
+      <div class="item" data-index="${index}" data-kind="${kind}">
+        <div class="item-top">
+          <div class="item-name-col">
+            <div class="morph">${escapeHtml(entry.text)}</div>
+            <div class="${meaningClass}">${escapeHtml(entry.meaning || "")}</div>
+          </div>
+          <button class="icon-btn" data-action="edit" title="Editar">✎</button>
+          <button class="icon-btn danger" data-action="delete" title="Excluir">✕</button>
+        </div>
+        <div class="item-body">
+          <input class="edit-morph" type="text" value="${escapeHtml(entry.text)}" placeholder="forma">
+          <input class="edit-meaning" type="text" value="${escapeHtml(entry.meaning || "")}" placeholder="significado (opcional)">
+        </div>
+      </div>`;
+  }
+
+  function renderRoots(){
+    const list = document.getElementById("listRoot");
+    document.getElementById("countRoot").textContent = data.roots.length;
+    if(data.roots.length === 0){
+      list.innerHTML = '<div class="empty">nenhuma raiz ainda</div>';
+    } else {
+      list.innerHTML = data.roots.map((r, i) => rootItem(r, i)).join("");
+    }
+    renderBenchOptions();
+  }
+
+  function derivedWordItem(word, rootIndex, wordIndex){
+    const meaningClass = word.meaning ? "dword-meaning" : "dword-meaning is-empty";
+    return `
+      <div class="dword" data-root="${rootIndex}" data-word="${wordIndex}">
+        <div class="dword-top">
+          <span class="dword-text">${escapeHtml(word.text)}</span>
+          <button class="icon-mini" data-action="edit-word" title="Editar">✎</button>
+          <button class="icon-mini" data-action="del-word" title="Excluir">✕</button>
+        </div>
+        <div class="${meaningClass}">${escapeHtml(word.meaning || "")}</div>
+        <div class="dword-edit">
+          <input class="edit-word-text" type="text" value="${escapeHtml(word.text)}" placeholder="palavra">
+          <input class="edit-word-meaning" type="text" value="${escapeHtml(word.meaning || "")}" placeholder="significado (opcional)">
+        </div>
+      </div>`;
+  }
+
+  function rootItem(root, index){
+    const words = (root.words || []).map((w, wi) => derivedWordItem(w, index, wi)).join("");
+    const meaningClass = root.meaning ? "meaning-display" : "meaning-display is-empty";
+    return `
+      <div class="item" data-index="${index}" data-kind="root">
+        <div class="item-top">
+          <div class="item-name-col">
+            <div class="morph">${escapeHtml(root.name)}</div>
+            <div class="${meaningClass}">${escapeHtml(root.meaning || "")}</div>
+          </div>
+          <button class="icon-btn" data-action="edit" title="Editar">✎</button>
+          <button class="icon-btn danger" data-action="delete" title="Excluir">✕</button>
+        </div>
+        <div class="item-body">
+          <input class="edit-morph" type="text" value="${escapeHtml(root.name)}" placeholder="forma">
+          <input class="edit-meaning" type="text" value="${escapeHtml(root.meaning || "")}" placeholder="significado (opcional)">
+        </div>
+        <div class="derived-wrap">
+          <div class="derived-list">${words || '<span class="empty" style="padding:.3rem .6rem;">sem palavras derivadas</span>'}</div>
+          <div class="derived-add">
+            <div class="row-line">
+              <input type="text" placeholder="palavra derivada desta raiz" data-root-word-input="${index}">
+              <button data-action="add-word" data-root="${index}">Adicionar</button>
+            </div>
+            <input type="text" class="dword-meaning-input" placeholder="significado da palavra (opcional)" data-root-word-meaning-input="${index}">
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderBenchOptions(){
+    fillSelect("benchPrefix", data.prefixes);
+    fillSelect("benchRoot", data.roots.map(r => ({text:r.name, meaning:r.meaning})));
+    fillSelect("benchSuffix", data.suffixes);
+    updateBenchWord();
+  }
+
+  function fillSelect(id, entries){
+    const sel = document.getElementById(id);
+    const current = sel.value;
+    sel.innerHTML = '<option value="">—</option>' + entries.map(e => `<option value="${escapeHtml(e.text)}">${escapeHtml(e.text)}</option>`).join("");
+    if(entries.some(e => e.text === current)) sel.value = current;
+  }
+
+  function findMeaning(entries, text){
+    const found = entries.find(e => e.text === text);
+    return found ? (found.meaning || "") : "";
+  }
+
+  function updateBenchWord(){
+    const p = document.getElementById("benchPrefix").value;
+    const r = document.getElementById("benchRoot").value;
+    const s = document.getElementById("benchSuffix").value;
+    const el = document.getElementById("benchWord");
+
+    document.getElementById("benchPrefixMeaning").textContent = p ? findMeaning(data.prefixes, p) : "";
+    document.getElementById("benchRootMeaning").textContent = r ? findMeaning(data.roots.map(x=>({text:x.name,meaning:x.meaning})), r) : "";
+    document.getElementById("benchSuffixMeaning").textContent = s ? findMeaning(data.suffixes, s) : "";
+
+    if(!p && !r && !s){
+      el.innerHTML = '<span class="part">selecione</span>';
+      return;
+    }
+    const clean = v => v.replace(/-/g, "");
+    el.innerHTML =
+      (p ? `<span class="part">${escapeHtml(clean(p))}</span>` : "") +
+      (r ? `<span class="part root">${escapeHtml(clean(r))}</span>` : "") +
+      (s ? `<span class="part">${escapeHtml(clean(s))}</span>` : "");
+  }
+
+  function renderAll(){
+    renderPrefixes();
+    renderSuffixes();
+    renderRoots();
+  }
+
+  // ---------- mutations ----------
+  function addSimple(kind){
+    const inputId = kind === "prefix" ? "inputPrefix" : "inputSuffix";
+    const meaningId = kind === "prefix" ? "inputPrefixMeaning" : "inputSuffixMeaning";
+    const input = document.getElementById(inputId);
+    const meaningInput = document.getElementById(meaningId);
+    const value = input.value.trim();
+    if(!value) return;
+    const entry = {text: value, meaning: meaningInput.value.trim()};
+    if(kind === "prefix") data.prefixes.push(entry);
+    else data.suffixes.push(entry);
+    input.value = "";
+    meaningInput.value = "";
+    save();
+    kind === "prefix" ? renderPrefixes() : renderSuffixes();
+  }
+
+  function addRoot(){
+    const input = document.getElementById("inputRoot");
+    const meaningInput = document.getElementById("inputRootMeaning");
+    const value = input.value.trim();
+    if(!value) return;
+    data.roots.push({name: value, meaning: meaningInput.value.trim(), words: []});
+    input.value = "";
+    meaningInput.value = "";
+    save();
+    renderRoots();
+  }
+
+  function deleteAt(kind, index){
+    if(kind === "prefix") data.prefixes.splice(index, 1);
+    else if(kind === "suffix") data.suffixes.splice(index, 1);
+    else if(kind === "root") data.roots.splice(index, 1);
+    save();
+    renderAll();
+  }
+
+  function updateAt(kind, index, newText, newMeaning){
+    if(!newText) return;
+    if(kind === "prefix") data.prefixes[index] = {text:newText, meaning:newMeaning};
+    else if(kind === "suffix") data.suffixes[index] = {text:newText, meaning:newMeaning};
+    else if(kind === "root") { data.roots[index].name = newText; data.roots[index].meaning = newMeaning; }
+    save();
+    renderAll();
+  }
+
+  function addWordToRoot(rootIndex, text, meaning){
+    text = text.trim();
+    if(!text) return;
+    data.roots[rootIndex].words.push({text: text, meaning: (meaning || "").trim()});
+    save();
+    renderRoots();
+  }
+
+  function updateWordInRoot(rootIndex, wordIndex, text, meaning){
+    if(!text) return;
+    data.roots[rootIndex].words[wordIndex] = {text: text, meaning: meaning};
+    save();
+    renderRoots();
+  }
+
+  function deleteWordFromRoot(rootIndex, wordIndex){
+    data.roots[rootIndex].words.splice(wordIndex, 1);
+    save();
+    renderRoots();
+  }
+
+  // ---------- event delegation ----------
+  function wireColumn(colId, kind){
+    document.getElementById(colId).addEventListener("click", (e) => {
+      const actionBtn = e.target.closest("[data-action]");
+      if(!actionBtn) return;
+      const action = actionBtn.dataset.action;
+
+      if(action === "add-word"){
+        const rootIndex = Number(actionBtn.dataset.root);
+        const input = document.querySelector(`[data-root-word-input="${rootIndex}"]`);
+        const meaningInput = document.querySelector(`[data-root-word-meaning-input="${rootIndex}"]`);
+        addWordToRoot(rootIndex, input.value, meaningInput.value);
+        return;
+      }
+
+      const dwordEl = actionBtn.closest(".dword");
+      if(dwordEl && (action === "del-word" || action === "edit-word")){
+        const rootIndex = Number(dwordEl.dataset.root);
+        const wordIndex = Number(dwordEl.dataset.word);
+        if(action === "del-word"){
+          deleteWordFromRoot(rootIndex, wordIndex);
+        } else {
+          const isEditing = dwordEl.classList.contains("edit-mode");
+          if(isEditing){
+            const textField = dwordEl.querySelector(".edit-word-text");
+            const meaningField = dwordEl.querySelector(".edit-word-meaning");
+            updateWordInRoot(rootIndex, wordIndex, textField.value.trim(), meaningField.value.trim());
+          } else {
+            dwordEl.classList.add("edit-mode");
+            actionBtn.textContent = "✔";
+            const textField = dwordEl.querySelector(".edit-word-text");
+            textField.focus();
+            textField.select();
+          }
+        }
+        return;
+      }
+
+      const item = actionBtn.closest(".item");
+      const index = Number(item.dataset.index);
+      const itemKind = item.dataset.kind;
+
+      if(action === "delete"){
+        if(confirm("Excluir este item?")) deleteAt(itemKind, index);
+      } else if(action === "edit"){
+        const isEditing = item.classList.contains("edit-mode");
+        if(isEditing){
+          const morphField = item.querySelector(".edit-morph");
+          const meaningField = item.querySelector(".edit-meaning");
+          updateAt(itemKind, index, morphField.value.trim(), meaningField.value.trim());
+        } else {
+          item.classList.add("edit-mode");
+          actionBtn.textContent = "✔";
+          const morphField = item.querySelector(".edit-morph");
+          morphField.focus();
+          morphField.select();
+        }
+      }
+    });
+
+    // Enter key support inside column (add-word inputs, edit fields)
+    document.getElementById(colId).addEventListener("keydown", (e) => {
+      if(e.key !== "Enter") return;
+      if(e.target.matches("[data-root-word-input]") || e.target.matches("[data-root-word-meaning-input]")){
+        const rootIndex = Number(e.target.dataset.rootWordInput || e.target.dataset.rootWordMeaningInput);
+        const input = document.querySelector(`[data-root-word-input="${rootIndex}"]`);
+        const meaningInput = document.querySelector(`[data-root-word-meaning-input="${rootIndex}"]`);
+        addWordToRoot(rootIndex, input.value, meaningInput.value);
+      } else if(e.target.matches(".edit-word-text") || e.target.matches(".edit-word-meaning")){
+        const dwordEl = e.target.closest(".dword");
+        const textField = dwordEl.querySelector(".edit-word-text");
+        const meaningField = dwordEl.querySelector(".edit-word-meaning");
+        updateWordInRoot(Number(dwordEl.dataset.root), Number(dwordEl.dataset.word), textField.value.trim(), meaningField.value.trim());
+      } else if(e.target.matches(".edit-morph") || e.target.matches(".edit-meaning")){
+        const item = e.target.closest(".item");
+        const morphField = item.querySelector(".edit-morph");
+        const meaningField = item.querySelector(".edit-meaning");
+        updateAt(item.dataset.kind, Number(item.dataset.index), morphField.value.trim(), meaningField.value.trim());
+      }
+    });
+  }
+
+  wireColumn("listPrefix", "prefix");
+  wireColumn("listSuffix", "suffix");
+  wireColumn("listRoot", "root");
+
+  document.getElementById("addPrefix").addEventListener("click", () => addSimple("prefix"));
+  document.getElementById("addSuffix").addEventListener("click", () => addSimple("suffix"));
+  document.getElementById("addRoot").addEventListener("click", addRoot);
+
+  document.getElementById("inputPrefix").addEventListener("keydown", e => { if(e.key === "Enter") addSimple("prefix"); });
+  document.getElementById("inputPrefixMeaning").addEventListener("keydown", e => { if(e.key === "Enter") addSimple("prefix"); });
+  document.getElementById("inputSuffix").addEventListener("keydown", e => { if(e.key === "Enter") addSimple("suffix"); });
+  document.getElementById("inputSuffixMeaning").addEventListener("keydown", e => { if(e.key === "Enter") addSimple("suffix"); });
+  document.getElementById("inputRoot").addEventListener("keydown", e => { if(e.key === "Enter") addRoot(); });
+  document.getElementById("inputRootMeaning").addEventListener("keydown", e => { if(e.key === "Enter") addRoot(); });
+
+  ["benchPrefix","benchRoot","benchSuffix"].forEach(id => {
+    document.getElementById(id).addEventListener("change", updateBenchWord);
+  });
+
+  // ---------- save / load JSON ----------
+  document.getElementById("btnSave").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const stamp = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = `oficina-morfemas-${stamp}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus("arquivo JSON exportado");
+  });
+
+  document.getElementById("btnLoad").addEventListener("click", () => {
+    document.getElementById("fileInput").click();
+  });
+
+  document.getElementById("fileInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try{
+        const parsed = JSON.parse(evt.target.result);
+        applyParsed(parsed);
+        save();
+        renderAll();
+        setStatus("JSON carregado com sucesso");
+      }catch(err){
+        alert("Não foi possível ler este arquivo — verifique se é um JSON válido exportado por esta ferramenta.");
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = "";
+  });
+
+  document.getElementById("btnClear").addEventListener("click", () => {
+    if(confirm("Isso vai apagar todos os prefixos, raízes e sufixos salvos no navegador. Tem certeza?")){
+      data = {prefixes:[], suffixes:[], roots:[]};
+      save();
+      renderAll();
+    }
+  });
+
+  // ---------- init ----------
+  loadFromStorage();
+  renderAll();
+})();
+</script>
+
+</body>
+</html>

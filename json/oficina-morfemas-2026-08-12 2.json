@@ -1,0 +1,89 @@
+{
+  "prefixes": [
+    {
+      "text": "Sa-",
+      "meaning": "indica que a palavra é uma ação acontecendo agora"
+    },
+    {
+      "text": "Vo-",
+      "meaning": "passado"
+    },
+    {
+      "text": "Ne-",
+      "meaning": "Negação"
+    }
+  ],
+  "suffixes": [
+    {
+      "text": "-r",
+      "meaning": "sujeito, exemplo vael-r (o lobo [faz algo])"
+    },
+    {
+      "text": "-en",
+      "meaning": "objeto, exemplo Vael*r Kaelen* = \"O lobo [pegou/quebrou/usou] a espada"
+    },
+    {
+      "text": "-m",
+      "meaning": "Genitivo, substitui \"de\", \"do\", \"da\". Indica dono, criador ou de onde algo veio. Kael Vaelm = \"A espada do lobo"
+    },
+    {
+      "text": "-al",
+      "meaning": "Dativo / Direção, exemplo Vaelal (Para o lobo). Kael Vaelal = \"A espada [é/foi dada] para o lobo"
+    },
+    {
+      "text": "-k",
+      "meaning": "Locativo / Instrumental, exemplo  Kaelk (Com a espada / Na espada)Vael*r Kaelk* = \"O lobo [caça/luta] com a espada\" (ou \"O lobo está na espada\", o contexto da história dirá qual dos dois)."
+    }
+  ],
+  "roots": [
+    {
+      "name": "-Dyew",
+      "meaning": "céu, brilhar",
+      "words": []
+    },
+    {
+      "name": "-bhég",
+      "meaning": "quebrar, moldar, rio curvo,  arco de flecha",
+      "words": [
+        {
+          "text": "Sabhég",
+          "meaning": "Eu) estou moldando / quebrando"
+        },
+        {
+          "text": "Vobhég",
+          "meaning": "Quebrou / Moldou (no passado)"
+        }
+      ]
+    },
+    {
+      "name": "-dweh",
+      "meaning": "longo, distante",
+      "words": [
+        {
+          "text": "Nedweh",
+          "meaning": "Não é distante / É perto"
+        }
+      ]
+    },
+    {
+      "name": "-perkw",
+      "meaning": "carvalho, estrondo",
+      "words": []
+    },
+    {
+      "name": "-égo",
+      "meaning": "eu",
+      "words": []
+    },
+    {
+      "name": "-we",
+      "meaning": "nós",
+      "words": []
+    },
+    {
+      "name": "-yuh",
+      "meaning": "voçe",
+      "words": []
+    }
+  ]
+}

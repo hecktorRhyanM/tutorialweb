@@ -1,0 +1,577 @@
+{
+ "prefixes": [
+  {
+   "text": "Sa-",
+   "meaning": "indica que a palavra é uma ação acontecendo agora"
+  },
+  {
+   "text": "Vo-",
+   "meaning": "passado"
+  },
+  {
+   "text": "Ne-",
+   "meaning": "Negação"
+  },
+  {
+   "text": "Gwo-",
+   "meaning": "O Fazedor / A Ferramenta"
+  },
+  {
+   "text": "Da-",
+   "meaning": "O Lugar / O Resultado"
+  },
+  {
+   "text": "Su-",
+   "meaning": "O Estado / O Conceito Abstrato"
+  }
+ ],
+ "roots": [
+  {
+   "name": "-Dyew",
+   "meaning": "céu, brilhar",
+   "words": []
+  },
+  {
+   "name": "-bhég",
+   "meaning": "quebrar, moldar, rio curvo,  arco de flecha",
+   "words": [
+    {
+     "text": "Sabhég",
+     "meaning": "Eu) estou moldando / quebrando"
+    },
+    {
+     "text": "Vobhég",
+     "meaning": "Quebrou / Moldou (no passado)"
+    }
+   ]
+  },
+  {
+   "name": "-dweh",
+   "meaning": "longo, distante",
+   "words": [
+    {
+     "text": "Nedweh",
+     "meaning": "Não é distante / É perto"
+    }
+   ]
+  },
+  {
+   "name": "-perkw",
+   "meaning": "carvalho, estrondo",
+   "words": []
+  },
+  {
+   "name": "-égo",
+   "meaning": "eu",
+   "words": []
+  },
+  {
+   "name": "-we",
+   "meaning": "nós",
+   "words": []
+  },
+  {
+   "name": "-yuh",
+   "meaning": "voçe",
+   "words": []
+  },
+  {
+   "name": "-Seul-",
+   "meaning": "Sol",
+   "words": []
+  },
+  {
+   "name": "-mehno-",
+   "meaning": "Lua",
+   "words": []
+  },
+  {
+   "name": "-ignis-",
+   "meaning": "Fogo",
+   "words": []
+  },
+  {
+   "name": "-epom-",
+   "meaning": "Agua",
+   "words": []
+  },
+  {
+   "name": "-dhego-",
+   "meaning": "Terra",
+   "words": []
+  },
+  {
+   "name": "-Viy-",
+   "meaning": "Vento",
+   "words": []
+  },
+  {
+   "name": "-tron-",
+   "meaning": "Montanha",
+   "words": []
+  },
+  {
+   "name": "-haus-",
+   "meaning": "Amanhecer",
+   "words": [
+    {
+     "text": "Suhaus",
+     "meaning": "A esperança , o amanhecer"
+    }
+   ]
+  },
+  {
+   "name": "-Bel-",
+   "meaning": "Forte",
+   "words": [
+    {
+     "text": "Subel",
+     "meaning": "A força"
+    },
+    {
+     "text": "Nebel",
+     "meaning": "O fraco"
+    }
+   ]
+  },
+  {
+   "name": "-Baerg-",
+   "meaning": "Cozinhar, assar",
+   "words": [
+    {
+     "text": "Gwobaerg",
+     "meaning": "O Cozinheiro / O Forno"
+    }
+   ]
+  },
+  {
+   "name": "-Baérg-",
+   "meaning": "Proteger,guardar",
+   "words": [
+    {
+     "text": "Gwobaérg",
+     "meaning": "O Protetor / O Guardião"
+    },
+    {
+     "text": "Dabaérg",
+     "meaning": "A Fortaleza / O Abrigo"
+    },
+    {
+     "text": "Nebaérg",
+     "meaning": "Desprotegido / Abandonado"
+    }
+   ]
+  },
+  {
+   "name": "-ber-",
+   "meaning": "marrom,urso",
+   "words": [
+    {
+     "text": "Suber",
+     "meaning": "A natureza"
+    }
+   ]
+  },
+  {
+   "name": "-bewd-",
+   "meaning": "acordar",
+   "words": [
+    {
+     "text": "Gwobewd",
+     "meaning": "O Vigia / O Despertador"
+    },
+    {
+     "text": "Dabewd",
+     "meaning": "O Templo / O Local de Despertar"
+    },
+    {
+     "text": "Nebewd",
+     "meaning": "Adormecido / Inconsciente"
+    }
+   ]
+  },
+  {
+   "name": "-bewg-",
+   "meaning": "fugir, desfrutar",
+   "words": [
+    {
+     "text": "Dabewg",
+     "meaning": "O Refúgio / O Paraíso"
+    }
+   ]
+  },
+  {
+   "name": "hengw",
+   "meaning": "fogueira, queimadura",
+   "words": [
+    {
+     "text": "Dahengw",
+     "meaning": "A Lareira / O Lar"
+    },
+    {
+     "text": "Suhengw",
+     "meaning": "O Ardor / A Queimadura"
+    },
+    {
+     "text": "Gwohengw",
+     "meaning": "O Acendedor / O Guardião do Fogo"
+    },
+    {
+     "text": "Sahengw",
+     "meaning": "está queimando"
+    }
+   ]
+  },
+  {
+   "name": "gwen",
+   "meaning": "matar, assassinar",
+   "words": [
+    {
+     "text": "Gwogwen",
+     "meaning": "O Assassino"
+    },
+    {
+     "text": "Dagwen",
+     "meaning": "O Campo de Batalha"
+    },
+    {
+     "text": "Sugwen",
+     "meaning": "A Morte / O Assassinato"
+    }
+   ]
+  },
+  {
+   "name": "gwew",
+   "meaning": "(orar, adorar, prostrar-se)",
+   "words": [
+    {
+     "text": "Gwogwew",
+     "meaning": "O Sacerdote"
+    },
+    {
+     "text": "Dagwew",
+     "meaning": "O Templo / O Santuário"
+    },
+    {
+     "text": "Sugwew",
+     "meaning": "A Oração / A Fé"
+    }
+   ]
+  },
+  {
+   "name": "diwen",
+   "meaning": "fazer barulho",
+   "words": [
+    {
+     "text": "Sudiwen",
+     "meaning": "O Som / O Barulho"
+    },
+    {
+     "text": "Gwodiwen",
+     "meaning": "O Tambor / O Arauto"
+    },
+    {
+     "text": "Nediwen",
+     "meaning": "Silencioso / Quieto"
+    },
+    {
+     "text": "Dadiwen",
+     "meaning": "A Praça / O Mercado"
+    }
+   ]
+  },
+  {
+   "name": "dwer",
+   "meaning": "Porta",
+   "words": [
+    {
+     "text": "Gwodwer",
+     "meaning": "O Porteiro / O Guardião da Porta"
+    },
+    {
+     "text": "Dadwer",
+     "meaning": "Portão / A Entrada"
+    }
+   ]
+  },
+  {
+   "name": "Theo",
+   "meaning": "isto, aquilo",
+   "words": []
+  },
+  {
+   "name": "zeo",
+   "meaning": "ele, ela",
+   "words": []
+  },
+  {
+   "name": "swe",
+   "meaning": "meu,seu",
+   "words": []
+  },
+  {
+   "name": "nos",
+   "meaning": "nosso",
+   "words": []
+  },
+  {
+   "name": "hoino",
+   "meaning": "um",
+   "words": []
+  },
+  {
+   "name": "dwo",
+   "meaning": "dois",
+   "words": []
+  },
+  {
+   "name": "tre",
+   "meaning": "tres",
+   "words": []
+  },
+  {
+   "name": "kwet",
+   "meaning": "quatro",
+   "words": []
+  },
+  {
+   "name": "penkw",
+   "meaning": "cinco",
+   "words": []
+  },
+  {
+   "name": "weks",
+   "meaning": "seis",
+   "words": []
+  },
+  {
+   "name": "sept",
+   "meaning": "sete",
+   "words": []
+  },
+  {
+   "name": "ekto",
+   "meaning": "oito",
+   "words": []
+  },
+  {
+   "name": "newn",
+   "meaning": "nove",
+   "words": []
+  },
+  {
+   "name": "dek",
+   "meaning": "dez",
+   "words": []
+  },
+  {
+   "name": "suna",
+   "meaning": "nada,zero",
+   "words": []
+  },
+  {
+   "name": "dik",
+   "meaning": "cem",
+   "words": []
+  },
+  {
+   "name": "méter",
+   "meaning": "mãe",
+   "words": []
+  },
+  {
+   "name": "pter",
+   "meaning": "pai",
+   "words": []
+  },
+  {
+   "name": "gwentor",
+   "meaning": "parente, ancestral",
+   "words": []
+  },
+  {
+   "name": "bréth",
+   "meaning": "irmão",
+   "words": []
+  },
+  {
+   "name": "gwén",
+   "meaning": "mulher, esposa, amor",
+   "words": []
+  },
+  {
+   "name": "swéssa",
+   "meaning": "irmã",
+   "words": []
+  },
+  {
+   "name": "duhter",
+   "meaning": "filha",
+   "words": []
+  },
+  {
+   "name": "suhnos",
+   "meaning": "filho",
+   "words": []
+  },
+  {
+   "name": "nepo",
+   "meaning": "sobrinho, neto",
+   "words": []
+  },
+  {
+   "name": "swépo",
+   "meaning": "obrinha, neta",
+   "words": []
+  },
+  {
+   "name": "wed",
+   "meaning": "promessa, juramento, casamento",
+   "words": [
+    {
+     "text": "Dawed",
+     "meaning": "O Altar, o local do casamento/pacto"
+    },
+    {
+     "text": "Suwed",
+     "meaning": "A Aliança, o pacto sagrado, a lei"
+    }
+   ]
+  },
+  {
+   "name": "uros",
+   "meaning": "parente do marido",
+   "words": []
+  },
+  {
+   "name": "uruh",
+   "meaning": "parente da esposa",
+   "words": []
+  },
+  {
+   "name": "widew",
+   "meaning": "viúva, viúvo",
+   "words": []
+  },
+  {
+   "name": "man",
+   "meaning": "ser humano",
+   "words": []
+  },
+  {
+   "name": "ener",
+   "meaning": "homem (varão)",
+   "words": []
+  },
+  {
+   "name": "póts",
+   "meaning": "mestre, marido",
+   "words": []
+  },
+  {
+   "name": "óts",
+   "meaning": "estranho, visitante",
+   "words": []
+  },
+  {
+   "name": "weyk",
+   "meaning": "acordar (pacto), assentar em um lugar",
+   "words": [
+    {
+     "text": "Daweyk",
+     "meaning": "A Vila, o povoado, a casa-clã"
+    }
+   ]
+  },
+  {
+   "name": "reg",
+   "meaning": "rei",
+   "words": [
+    {
+     "text": "Dareg",
+     "meaning": "O Reino, o trono, a corte"
+    },
+    {
+     "text": "Gworeg",
+     "meaning": "A Coroa, o regente"
+    }
+   ]
+  },
+  {
+   "name": "tewta",
+   "meaning": "pessoas da comunidade, tribo, conhecidos",
+   "words": [
+    {
+     "text": "Gwotewta",
+     "meaning": "O Chefe da Tribo, o líder comunitário"
+    }
+   ]
+  },
+  {
+   "name": "lewd",
+   "meaning": "grupo de pessoas estrangeiras, os de fora",
+   "words": []
+  }
+ ],
+ "infixes": [
+  {
+   "text": "-i-",
+   "meaning": "Dual: exatamente dois. Fica entre a raiz e o sufixo de caso."
+  },
+  {
+   "text": "-a-",
+   "meaning": "Plural: três ou mais. Fica entre a raiz e o sufixo de caso."
+  }
+ ],
+ "suffixes": [
+  {
+   "text": "-r",
+   "meaning": "sujeito, exemplo vael-r (o lobo [faz algo])"
+  },
+  {
+   "text": "-en",
+   "meaning": "objeto, exemplo Vael*r Kaelen* = \"O lobo [pegou/quebrou/usou] a espada"
+  },
+  {
+   "text": "-m",
+   "meaning": "Genitivo, substitui \"de\", \"do\", \"da\". Indica dono, criador ou de onde algo veio. Kael Vaelm = \"A espada do lobo"
+  },
+  {
+   "text": "-al",
+   "meaning": "Dativo / Direção, exemplo Vaelal (Para o lobo). Kael Vaelal = \"A espada [é/foi dada] para o lobo"
+  },
+  {
+   "text": "-k",
+   "meaning": "Locativo / Instrumental, exemplo  Kaelk (Com a espada / Na espada)Vael*r Kaelk* = \"O lobo [caça/luta] com a espada\" (ou \"O lobo está na espada\", o contexto da história dirá qual dos dois)."
+  }
+ ],
+ "phonology": [
+  {
+   "name": "W → U",
+   "description": "O \"w\" no fim da raiz vira \"u\" antes de receber sufixo/infixo.",
+   "example": "perkw + -m → perkum"
+  },
+  {
+   "name": "Y → I",
+   "description": "O \"y\" no fim da raiz vira \"i\" antes de receber sufixo/infixo.",
+   "example": "viy + -k → viik"
+  },
+  {
+   "name": "Vogal de eco (epêntese)",
+   "description": "Se a raiz termina em consoante e o sufixo começa com consoante, insere-se uma cópia da última vogal da raiz.",
+   "example": "bhég + -k → bhégék"
+  }
+ ],
+ "syntax": [
+  {
+   "name": "Ordem padrão (SVO)",
+   "description": "A ordem neutra é Sujeito — Verbo — Objeto. Os sufixos de caso permitem inverter para dar ênfase.",
+   "example": "Égor vobhég bhégen."
+  },
+  {
+   "name": "Concordância opcional do adjetivo",
+   "description": "O adjetivo normalmente fica \"limpo\" junto do substantivo; só recebe sufixo de caso para destacá-lo.",
+   "example": "bel perkw → belen perkwen (ênfase)"
+  }
+ ]
+}

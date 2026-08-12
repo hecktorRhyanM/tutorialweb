@@ -1,0 +1,226 @@
+{
+  "prefixes": [
+    {
+      "text": "Sa-",
+      "meaning": "indica que a palavra é uma ação acontecendo agora"
+    },
+    {
+      "text": "Vo-",
+      "meaning": "passado"
+    },
+    {
+      "text": "Ne-",
+      "meaning": "Negação"
+    },
+    {
+      "text": "Gwo-",
+      "meaning": "O Fazedor / A Ferramenta"
+    },
+    {
+      "text": "Da-",
+      "meaning": "O Lugar / O Resultado"
+    },
+    {
+      "text": "Su-",
+      "meaning": "O Estado / O Conceito Abstrato"
+    }
+  ],
+  "suffixes": [
+    {
+      "text": "-r",
+      "meaning": "sujeito, exemplo vael-r (o lobo [faz algo])"
+    },
+    {
+      "text": "-en",
+      "meaning": "objeto, exemplo Vael*r Kaelen* = \"O lobo [pegou/quebrou/usou] a espada"
+    },
+    {
+      "text": "-m",
+      "meaning": "Genitivo, substitui \"de\", \"do\", \"da\". Indica dono, criador ou de onde algo veio. Kael Vaelm = \"A espada do lobo"
+    },
+    {
+      "text": "-al",
+      "meaning": "Dativo / Direção, exemplo Vaelal (Para o lobo). Kael Vaelal = \"A espada [é/foi dada] para o lobo"
+    },
+    {
+      "text": "-k",
+      "meaning": "Locativo / Instrumental, exemplo  Kaelk (Com a espada / Na espada)Vael*r Kaelk* = \"O lobo [caça/luta] com a espada\" (ou \"O lobo está na espada\", o contexto da história dirá qual dos dois)."
+    }
+  ],
+  "roots": [
+    {
+      "name": "-Dyew",
+      "meaning": "céu, brilhar",
+      "words": []
+    },
+    {
+      "name": "-bhég",
+      "meaning": "quebrar, moldar, rio curvo,  arco de flecha",
+      "words": [
+        {
+          "text": "Sabhég",
+          "meaning": "Eu) estou moldando / quebrando"
+        },
+        {
+          "text": "Vobhég",
+          "meaning": "Quebrou / Moldou (no passado)"
+        }
+      ]
+    },
+    {
+      "name": "-dweh",
+      "meaning": "longo, distante",
+      "words": [
+        {
+          "text": "Nedweh",
+          "meaning": "Não é distante / É perto"
+        }
+      ]
+    },
+    {
+      "name": "-perkw",
+      "meaning": "carvalho, estrondo",
+      "words": []
+    },
+    {
+      "name": "-égo",
+      "meaning": "eu",
+      "words": []
+    },
+    {
+      "name": "-we",
+      "meaning": "nós",
+      "words": []
+    },
+    {
+      "name": "-yuh",
+      "meaning": "voçe",
+      "words": []
+    },
+    {
+      "name": "-Seul-",
+      "meaning": "Sol",
+      "words": []
+    },
+    {
+      "name": "-mehno-",
+      "meaning": "Lua",
+      "words": []
+    },
+    {
+      "name": "-ignis-",
+      "meaning": "Fogo",
+      "words": []
+    },
+    {
+      "name": "-epom-",
+      "meaning": "Agua",
+      "words": []
+    },
+    {
+      "name": "-dhego-",
+      "meaning": "Terra",
+      "words": []
+    },
+    {
+      "name": "-Viy-",
+      "meaning": "Vento",
+      "words": []
+    },
+    {
+      "name": "-tron-",
+      "meaning": "Montanha",
+      "words": []
+    },
+    {
+      "name": "-haus-",
+      "meaning": "Amanhecer",
+      "words": [
+        {
+          "text": "Suhaus",
+          "meaning": "A esperança , o amanhecer"
+        }
+      ]
+    },
+    {
+      "name": "-Bel-",
+      "meaning": "Forte",
+      "words": [
+        {
+          "text": "Subel",
+          "meaning": "A força"
+        },
+        {
+          "text": "Nebel",
+          "meaning": "O fraco"
+        }
+      ]
+    },
+    {
+      "name": "-Baerg-",
+      "meaning": "Cozinhar, assar",
+      "words": [
+        {
+          "text": "Gwobaerg",
+          "meaning": "O Cozinheiro / O Forno"
+        }
+      ]
+    },
+    {
+      "name": "-Baérg-",
+      "meaning": "Proteger,guardar",
+      "words": [
+        {
+          "text": "Gwobaérg",
+          "meaning": "O Protetor / O Guardião"
+        },
+        {
+          "text": "Dabaérg",
+          "meaning": "A Fortaleza / O Abrigo"
+        },
+        {
+          "text": "Nebaérg",
+          "meaning": "Desprotegido / Abandonado"
+        }
+      ]
+    },
+    {
+      "name": "-ber-",
+      "meaning": "marrom,urso",
+      "words": [
+        {
+          "text": "Suber",
+          "meaning": "A natureza"
+        }
+      ]
+    },
+    {
+      "name": "-bewd-",
+      "meaning": "acordar",
+      "words": [
+        {
+          "text": "Gwobewd",
+          "meaning": "O Vigia / O Despertador"
+        },
+        {
+          "text": "Dabewd",
+          "meaning": "O Templo / O Local de Despertar"
+        },
+        {
+          "text": "Nebewd",
+          "meaning": "Adormecido / Inconsciente"
+        }
+      ]
+    },
+    {
+      "name": "-bewg-",
+      "meaning": "fugir, desfrutar",
+      "words": [
+        {
+          "text": "Dabewg",
+          "meaning": "O Refúgio / O Paraíso"
+        }
+      ]
+    }
+  ]
+}
